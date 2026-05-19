@@ -399,138 +399,181 @@ body::before {
 
     body {
         overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    /* SISTEMA SOLAR - Escala reduzida */
+    /* SISTEMA SOLAR - Muito menor para caber no celular */
     .solar-system {
-        width: 100vw;
-        height: 100vh;
-        max-width: 100%;
-        max-height: 100%;
-        transform: scale(0.25);
+        width: 1000px;
+        height: 1000px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.12) !important;
         margin: 0;
         padding: 0;
+        z-index: 1;
     }
 
-    /* ÓRBITAS - Ajustes proporcionais */
-    .mercury-orbit { width: 120px; height: 120px; }
-    .venus-orbit { width: 160px; height: 160px; }
-    .earth-orbit { width: 200px; height: 200px; }
-    .mars-orbit { width: 240px; height: 240px; }
-    .jupiter-orbit { width: 320px; height: 320px; }
-    .saturn-orbit { width: 380px; height: 380px; }
-    .uranus-orbit { width: 440px; height: 440px; }
-    .neptune-orbit { width: 500px; height: 500px; }
-    .pluto-orbit { width: 560px; height: 560px; }
+    /* ÓRBITAS - Mantêm proporcionalidade */
+    .mercury-orbit { width: 160px; height: 160px; }
+    .venus-orbit { width: 230px; height: 230px; }
+    .earth-orbit { width: 310px; height: 310px; }
+    .mars-orbit { width: 400px; height: 400px; }
+    .jupiter-orbit { width: 590px; height: 590px; }
+    .saturn-orbit { width: 730px; height: 730px; }
+    .uranus-orbit { width: 860px; height: 860px; }
+    .neptune-orbit { width: 950px; height: 950px; }
+    .pluto-orbit { width: 1020px; height: 1020px; }
 
     .asteroid-belt {
-        width: 280px;
-        height: 280px;
+        width: 480px;
+        height: 480px;
     }
 
     /* SOL */
     .sun {
-        width: 50px;
-        height: 50px;
+        width: 90px;
+        height: 90px;
+        pointer-events: auto;
     }
 
-    /* PLANETAS - Reduzidos proporcionalmente */
-    .mercurio { width: 6px; height: 6px; }
-    .venus { width: 10px; height: 10px; }
-    .earth { width: 12px; height: 12px; }
-    .mars { width: 8px; height: 8px; }
-    .jupiter { width: 24px; height: 24px; }
-    .saturn { width: 20px; height: 20px; }
-    .uranus { width: 16px; height: 16px; }
-    .neptune { width: 16px; height: 16px; }
-    .plutao { width: 5px; height: 5px; }
+    /* PLANETAS - Reduzidos muito pouco (a escala já reduz) */
+    .mercurio { width: 14px; height: 14px; }
+    .venus { width: 20px; height: 20px; }
+    .earth { width: 24px; height: 24px; }
+    .mars { width: 18px; height: 18px; }
+    .jupiter { width: 50px; height: 50px; }
+    .saturn { width: 42px; height: 42px; }
+    .uranus { width: 30px; height: 30px; }
+    .neptune { width: 30px; height: 30px; }
+    .plutao { width: 12px; height: 12px; }
 
     /* BOTÕES MAIORES PARA TOQUE */
     .planet-btn {
         width: 40px;
         height: 40px;
-        font-size: 18px;
+        font-size: 16px;
         left: -50px;
         opacity: 1;
+        pointer-events: auto;
     }
 
     .planet-btn:hover {
-        transform: scale(1.3);
+        transform: scale(1.2);
     }
 
-    /* HUD - Título responsivo */
+    /* HUD - Título no topo centralizado */
     .hud-title {
-        position: absolute;
-        top: 12px;
-        left: 12px;
+        position: fixed;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
         z-index: 20000;
         border-left: 2px solid #ffcc00;
-        padding-left: 12px;
+        padding-left: 10px;
+        text-align: center;
     }
 
     .hud-title h1 {
-        font-size: 16px;
+        font-size: 14px;
         letter-spacing: 1px;
         margin: 0;
+        white-space: nowrap;
     }
 
     .hud-title p {
-        font-size: 9px;
-        margin: 3px 0 0 0;
+        font-size: 8px;
+        margin: 2px 0 0 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 90vw;
     }
 
-    /* CARD - Posicionamento correto para celular */
+    /* CARD - Fixo na parte inferior, centralizado */
     .info-card {
         position: fixed;
-        bottom: 10px;
+        bottom: 8px;
         left: 50%;
         right: auto;
         top: auto;
-        width: 90%;
-        max-width: 90%;
-        padding: 15px;
-        border-radius: 12px;
+        width: 92%;
+        max-width: 92%;
+        max-height: 35vh;
+        padding: 12px;
+        border-radius: 10px;
         transform: translateX(-50%);
-        font-size: 13px;
+        font-size: 12px;
+        overflow-y: auto;
+        z-index: 10000;
     }
 
     .info-card.show {
-        bottom: 10px;
+        bottom: 8px;
         left: 50%;
         transform: translateX(-50%);
-        right: auto;
+        display: block !important;
     }
 
     .info-card h2 {
-        font-size: 18px;
-        margin: 0 0 10px 0;
+        font-size: 16px;
+        margin: 0 0 8px 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     .info-card p {
-        font-size: 12px;
-        margin: 8px 0;
+        font-size: 11px;
+        margin: 6px 0;
+        line-height: 1.4;
     }
 
     .info-card #close-btn {
-        font-size: 20px;
+        font-size: 18px;
         width: 24px;
         height: 24px;
+        margin: 0;
+        padding: 0;
+        float: right;
     }
 
     .fact-box {
-        padding: 10px;
-        margin: 12px 0;
-        font-size: 11px;
+        padding: 8px;
+        margin: 10px 0;
+        font-size: 10px;
+        border-radius: 8px;
+    }
+
+    .fact-box p {
+        font-size: 10px;
+        margin: 4px 0;
+    }
+
+    .fact-box strong {
+        font-size: 10px;
+    }
+
+    .nav-btns {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
     }
 
     .action-btn {
         padding: 8px;
-        font-size: 11px;
-        margin: 6px 0;
+        font-size: 10px;
+        margin: 0;
+        border-radius: 6px;
     }
 
     #planet-more-content {
-        font-size: 11px;
+        font-size: 10px;
+        margin-top: 8px;
+        padding-top: 8px;
+        line-height: 1.4;
     }
 
 }
