@@ -395,112 +395,142 @@ body::before {
 /* RESPONSIVIDADE CELULAR */
 /* ========================= */
 
-
-
 @media screen and (max-width: 768px) {
 
-    body{
+    body {
         overflow: hidden;
     }
 
-    /* SISTEMA SOLAR */
-    .solar-system{
+    /* SISTEMA SOLAR - Escala reduzida */
+    .solar-system {
         width: 100vw;
-        height: 100vw;
-        transform: scale(0.32);
+        height: 100vh;
+        max-width: 100%;
+        max-height: 100%;
+        transform: scale(0.25);
+        margin: 0;
+        padding: 0;
     }
 
-    /* ÓRBITAS */
-    .mercury-orbit { width: 140px; height: 140px; }
-    .venus-orbit { width: 200px; height: 200px; }
-    .earth-orbit { width: 270px; height: 270px; }
-    .mars-orbit { width: 340px; height: 340px; }
+    /* ÓRBITAS - Ajustes proporcionais */
+    .mercury-orbit { width: 120px; height: 120px; }
+    .venus-orbit { width: 160px; height: 160px; }
+    .earth-orbit { width: 200px; height: 200px; }
+    .mars-orbit { width: 240px; height: 240px; }
+    .jupiter-orbit { width: 320px; height: 320px; }
+    .saturn-orbit { width: 380px; height: 380px; }
+    .uranus-orbit { width: 440px; height: 440px; }
+    .neptune-orbit { width: 500px; height: 500px; }
+    .pluto-orbit { width: 560px; height: 560px; }
 
-    .jupiter-orbit { width: 470px; height: 470px; }
-    .saturn-orbit { width: 580px; height: 580px; }
-
-    .uranus-orbit { width: 690px; height: 690px; }
-    .neptune-orbit { width: 800px; height: 800px; }
-    .pluto-orbit { width: 900px; height: 900px; }
-
-    .asteroid-belt{
-        width: 400px;
-        height: 400px;
+    .asteroid-belt {
+        width: 280px;
+        height: 280px;
     }
 
     /* SOL */
-    .sun{
-        width: 60px;
-        height: 60px;
+    .sun {
+        width: 50px;
+        height: 50px;
     }
 
-    /* PLANETAS */
-    .mercurio{ width: 10px; height: 10px; }
-    .venus{ width: 14px; height: 14px; }
-    .earth{ width: 16px; height: 16px; }
-    .mars{ width: 12px; height: 12px; }
+    /* PLANETAS - Reduzidos proporcionalmente */
+    .mercurio { width: 6px; height: 6px; }
+    .venus { width: 10px; height: 10px; }
+    .earth { width: 12px; height: 12px; }
+    .mars { width: 8px; height: 8px; }
+    .jupiter { width: 24px; height: 24px; }
+    .saturn { width: 20px; height: 20px; }
+    .uranus { width: 16px; height: 16px; }
+    .neptune { width: 16px; height: 16px; }
+    .plutao { width: 5px; height: 5px; }
 
-    .jupiter{ width: 35px; height: 35px; }
-    .saturn{ width: 30px; height: 30px; }
-
-    .uranus{ width: 22px; height: 22px; }
-    .neptune{ width: 22px; height: 22px; }
-    .plutao{ width: 8px; height: 8px; }
-
-    /* BOTÕES */
-    .planet-btn{
-        width: 34px;
-        height: 34px;
+    /* BOTÕES MAIORES PARA TOQUE */
+    .planet-btn {
+        width: 40px;
+        height: 40px;
         font-size: 18px;
-        left: -45px;
+        left: -50px;
+        opacity: 1;
     }
 
-    /* HUD */
-    .hud-title{
-        top: 10px;
-        left: 10px;
+    .planet-btn:hover {
+        transform: scale(1.3);
+    }
+
+    /* HUD - Título responsivo */
+    .hud-title {
+        position: absolute;
+        top: 12px;
+        left: 12px;
         z-index: 20000;
+        border-left: 2px solid #ffcc00;
+        padding-left: 12px;
     }
 
-    .hud-title h1{
-        font-size: 18px;
-        letter-spacing: 2px;
+    .hud-title h1 {
+        font-size: 16px;
+        letter-spacing: 1px;
+        margin: 0;
     }
 
-    .hud-title p{
-        font-size: 10px;
+    .hud-title p {
+        font-size: 9px;
+        margin: 3px 0 0 0;
     }
 
-    /* CARD */
-    .info-card{
-        width: 80%;
-        padding: 18px;
-
-        top: 50%;
+    /* CARD - Posicionamento correto para celular */
+    .info-card {
+        position: fixed;
+        bottom: 10px;
         left: 50%;
-
         right: auto;
-
-        transform: translate(-50%, -50%);
-    }
-
-    .info-card.show{
-        right: auto;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    .info-card h2{
-        font-size: 22px;
-    }
-
-    .info-card p{
+        top: auto;
+        width: 90%;
+        max-width: 90%;
+        padding: 15px;
+        border-radius: 12px;
+        transform: translateX(-50%);
         font-size: 13px;
     }
 
-    .action-btn{
-        padding: 10px;
+    .info-card.show {
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        right: auto;
+    }
+
+    .info-card h2 {
+        font-size: 18px;
+        margin: 0 0 10px 0;
+    }
+
+    .info-card p {
         font-size: 12px;
+        margin: 8px 0;
+    }
+
+    .info-card #close-btn {
+        font-size: 20px;
+        width: 24px;
+        height: 24px;
+    }
+
+    .fact-box {
+        padding: 10px;
+        margin: 12px 0;
+        font-size: 11px;
+    }
+
+    .action-btn {
+        padding: 8px;
+        font-size: 11px;
+        margin: 6px 0;
+    }
+
+    #planet-more-content {
+        font-size: 11px;
     }
 
 }
