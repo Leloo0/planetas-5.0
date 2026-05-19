@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Solar Interativo - Edição de Engenharia</title>
+    <style>
+        /* --- 1. VARIÁVEIS TÉCNICAS E CORES --- */
+        :root {
+            --bg-deep-space: #010206;
+            --sun-core: #fff200;
+            --sun-corona: #ff8800;
+            --orbit-line: rgba(255, 255, 255, 0.12);
+            --card-bg: rgba(5, 10, 20, 0.98);
+            --gold-accent: #ffcc00;
+        }
+
+        /* --- 2. FUNDO ESPACIAL (ESTRELAS ARRUMADAS) --- */
+        body {
+            margin: 0;
+            height: 100vh;
+            background-color: var(--bg-deep-space);
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, #eee, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 150px 150px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 300px 450px, #ddd, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 500px 10px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 700px 600px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 900px 300px, rgba(255,200,100,0.5), rgba(0,0,0,0));
+            background-size: 400px 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: white;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* --- 3. CONTAINER DO SISTEMA --- */
+        .solar-system {
+            position: relative;
+            width: 1000px;
+            height: 1000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: scale(0.6); 
+            pointer-events: none; 
+        }
+
+        /* O SOL (CENTRO FIXO) */
+        .sun {
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            background: radial-gradient(circle, var(--sun-core) 20%, var(--sun-corona) 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 50px #ff5e00, 0 0 100px rgba(255, 136, 0, 0.4);
+            z-index: 1000;
+            pointer-events: auto;
+        }
+
+        /* --- 4. MECANISMO DE ÓRBITAS --- */
+        .orbit {
+            position: absolute;
+            border: 1px solid var(--orbit-line);
+            border-radius: 50%;
+            animation: orbitalRotation linear infinite;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            pointer-events: none; 
+        }
+
+        @keyframes orbitalRotation {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- 5. PLANETAS E BOTÕES --- */
+        .planet {
+            position: relative;
+            border-radius: 50%;
+            box-shadow: inset -6px -6px 15px rgba(0, 0, 0, 0.9);
+            z-index: 5;
+        }
+
+        .planet-btn {
+            position: absolute;
+            left: -45px; 
+            background: var(--gold-accent);
+            border: 2px solid white;
+            color: black;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 9999; 
+            pointer-events: auto; 
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .planet-btn:hover {
+            transform: scale(1.4);
+            background: white;
+            box-shadow: 0 0 25px white;
+        }
+
+        /* --- 6. ESPECIFICAÇÕES E CORREÇÃO DE Z-INDEX --- */
+        /* Planetas internos precisam de Z-index maior para serem clicáveis sobre órbitas externas */
+        .mercury-orbit { width: 160px; height: 160px; animation-duration: 6s; z-index: 900; }
+        .mercurio { width: 14px; height: 14px; background: #a5a5a5; }
+
+        .venus-orbit { width: 230px; height: 230px; animation-duration: 10s; z-index: 800; }
+        .venus { width: 20px; height: 20px; background: #e3bb76; }
+
+        .earth-orbit { width: 310px; height: 310px; animation-duration: 15s; z-index: 700; }
+        .earth { width: 24px; height: 24px; background: #2271b3; border: 1px solid rgba(255,255,255,0.2); }
+
+        .mars-orbit { width: 400px; height: 400px; animation-duration: 22s; z-index: 600; }
+        .mars { width: 18px; height: 18px; background: #e27b58; }
+
+        .asteroid-belt {
+            position: absolute;
+            width: 480px; height: 480px;
+            border: 12px dotted rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+            animation: orbitalRotation 120s linear infinite reverse;
+            z-index: 550;
+        }
+
+        .jupiter-orbit { width: 590px; height: 590px; animation-duration: 40s; z-index: 500; }
+        .jupiter { width: 50px; height: 50px; background: radial-gradient(circle, #d39c7e, #af6132); }
+
+        .saturn-orbit { width: 730px; height: 730px; animation-duration: 60s; z-index: 400; }
+        .saturn { width: 42px; height: 42px; background: #c5ab6e; }
+        .saturn::after {
+            content: ""; position: absolute; top: 50%; left: 50%;
+            width: 80px; height: 15px; border: 5px solid rgba(165,145,100,0.4);
+            border-radius: 50%; transform: translate(-50%, -50%) rotateX(75deg);
+        }
+
+        .uranus-orbit { width: 860px; height: 860px; animation-duration: 90s; z-index: 300; }
+        .uranus { width: 30px; height: 30px; background: #b5e3e3; }
+
+        .neptune-orbit { width: 950px; height: 950px; animation-duration: 130s; z-index: 200; }
+        .neptune { width: 30px; height: 30px; background: #3552ce; }
+
+        .pluto-orbit { width: 1020px; height: 1020px; animation-duration: 200s; z-index: 100; }
+        .plutao { width: 12px; height: 12px; background: #7b6653; }
+
+        /* --- 7. PAINEL DE INFORMAÇÕES --- */
+        .info-card {
+            position: fixed;
+            right: -500px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 380px;
+            background: var(--card-bg);
+            border: 2px solid var(--gold-accent);
+            padding: 35px;
+            border-radius: 25px;
+            transition: all 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            z-index: 10000;
+            box-shadow: -20px 20px 50px rgba(0,0,0,0.9);
+            pointer-events: auto;
+        }
+
+        .info-card.show { right: 40px; }
+        .info-card h2 { color: var(--gold-accent); margin-top: 0; font-size: 32px; text-transform: uppercase; letter-spacing: 2px; }
+        .info-card p { line-height: 1.7; color: #eee; font-size: 15px; }
+        
+        #close-btn { 
+            background: none; border: none; color: var(--gold-accent); 
+            float: right; cursor: pointer; font-size: 30px; margin-top: -15px; margin-right: -10px;
+            transition: 0.3s;
+        }
+        #close-btn:hover { transform: rotate(90deg); color: white; }
+
+        .fact-box {
+            background: rgba(255, 204, 0, 0.08);
+            border-radius: 12px;
+            padding: 18px;
+            margin: 20px 0;
+            border-left: 5px solid var(--gold-accent);
+        }
+
+        .nav-btns { display: flex; flex-direction: column; gap: 12px; }
+        .action-btn {
+            background: transparent; border: 1.5px solid var(--gold-accent);
+            color: var(--gold-accent); padding: 14px; border-radius: 10px;
+            cursor: pointer; font-weight: bold; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .action-btn:hover { background: var(--gold-accent); color: black; }
+
+        #planet-more-content {
+            margin-top: 15px; font-size: 14px; color: #bbb; display: none;
+            border-top: 1px solid #333; padding-top: 15px; line-height: 1.6;
+        }
+
+        /* --- 8. UI OVERLAY --- */
+        .hud-title {
+            position: absolute;
+            top: 40px; left: 40px;
+            border-left: 3px solid var(--gold-accent);
+            padding-left: 20px;
+        }
+        .hud-title h1 { margin: 0; letter-spacing: 5px; font-weight: 300; font-size: 36px; }
+        .hud-title p { margin: 5px 0; color: var(--gold-accent); font-size: 14px; opacity: 0.9; }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="hud-title">
+        <h1>ORBITAL EXPLORER</h1>
+        <p>Planetas do lelo muito legal - Atlas Interativo</p>
+    </div>
+
+    <div class="solar-system">
+        <div class="sun"></div>
+        
+        <div class="orbit mercury-orbit">
+            <button class="planet-btn" data-planet="mercury">?</button>
+            <div class="planet mercurio" 
+                 data-name="Mercúrio" 
+                 data-desc="O menor planeta do sistema e o mais próximo do Sol." 
+                 data-facts='["Um ano dura apenas 88 dias terrestres.", "Não possui luas nem atmosfera significativa.", "As temperaturas variam de -180°C a 430°C.", "É o segundo planeta mais denso do sistema solar."]' 
+                 data-more="Sua superfície é repleta de crateras de impacto, assemelhando-se muito à nossa Lua. Devido à sua proximidade com o Sol, Mercúrio é o planeta mais rápido, viajando a quase 47 quilômetros por segundo."></div>
+        </div>
+
+        <div class="orbit venus-orbit">
+            <button class="planet-btn" data-planet="venus">?</button>
+            <div class="planet venus" 
+                 data-name="Vênus" 
+                 data-desc="O planeta mais quente, superando até Mercúrio em temperatura superficial." 
+                 data-facts='["Gira no sentido oposto à maioria dos planetas.", "Sua pressão atmosférica é 90x maior que a da Terra.", "Um dia em Vênus é mais longo que seu ano terrestre.", "Possui milhares de vulcões em sua superfície."]' 
+                 data-more="Vênus brilha intensamente no céu porque suas nuvens espessas de ácido sulfúrico refletem a luz solar. É frequentemente chamado de Estrela d'Alva ou Estrela da Tarde devido ao seu brilho intenso após o pôr do sol."></div>
+        </div>
+
+        <div class="orbit earth-orbit">
+            <button class="planet-btn" data-planet="earth">?</button>
+            <div class="planet earth" 
+                 data-name="Terra" 
+                 data-desc="O nosso lar, o único local conhecido no universo que abriga vida." 
+                 data-facts='["71% da superfície é coberta por água líquida.", "Possui um campo magnético que nos protege de ventos solares.", "A atmosfera é rica em nitrogênio e oxigênio para sustentar a vida.", "A Terra viaja a 107.000 km/h pelo espaço."]' 
+                 data-more="A Terra não é uma esfera perfeita, mas um esferoide oblato. Possui apenas um satélite natural, a Lua, que estabiliza a oscilação do nosso planeta, tornando o clima mais ameno por bilhões de anos."></div>
+        </div>
+
+        <div class="orbit mars-orbit">
+            <button class="planet-btn" data-planet="mars">?</button>
+            <div class="planet mars" 
+                 data-name="Marte" 
+                 data-desc="O planeta vermelho, caracterizado pela poeira rica em óxido de ferro." 
+                 data-facts='["Lar do Monte Olimpo, o vulcão mais alto do sistema solar.", "Possui calotas polares de gelo de água e dióxido de carbono.", "A gravidade é apenas 38% da gravidade terrestre.", "Um dia em Marte dura 24,6 horas."]' 
+                 data-more="Marte possui o maior sistema de cânions do sistema solar, o Valles Marineris. É o foco principal de missões robóticas da NASA e da SpaceX para futura colonização humana."></div>
+        </div>
+
+        <div class="asteroid-belt"></div>
+
+        <div class="orbit jupiter-orbit">
+            <button class="planet-btn" data-planet="jupiter">?</button>
+            <div class="planet jupiter" 
+                 data-name="Júpiter" 
+                 data-desc="O gigante gasoso e o maior planeta do nosso sistema solar." 
+                 data-facts='["Possui a Grande Mancha Vermelha, uma tempestade furiosa de 300 anos.", "Tem mais de 95 luas confirmadas, incluindo Ganímedes.", "Um dia jupiteriano dura apenas 10 horas.", "Sua massa é 318 vezes a da Terra."]' 
+                 data-more="Júpiter atua como um aspirador de pó cósmico, sua imensa gravidade atrai ou desvia cometas e asteroides que poderiam colidir com a Terra. Não possui uma superfície sólida onde se possa pousar."></div>
+        </div>
+
+        <div class="orbit saturn-orbit">
+            <button class="planet-btn" data-planet="saturn">?</button>
+            <div class="planet saturn" 
+                 data-name="Saturno" 
+                 data-desc="O majestoso rei dos anéis, composto majoritariamente por hidrogênio." 
+                 data-facts='["Seus anéis são feitos de bilhões de pedaços de gelo e rocha.", "É o planeta menos denso; flutuaria em uma banheira gigante.", "Possui uma tempestade hexagonal única no polo norte.", "A lua Titã tem uma atmosfera densa e rios de metano."]' 
+                 data-more="Saturno tem o sistema de anéis mais complexo do sistema solar, estendendo-se por milhares de quilômetros, mas com apenas 10 metros de espessura média em algumas regiões."></div>
+        </div>
+
+        <div class="orbit uranus-orbit">
+            <button class="planet-btn" data-planet="uranus">?</button>
+            <div class="planet uranus" 
+                 data-name="Urano" 
+                 data-desc="O gigante de gelo que possui uma rotação lateral única." 
+                 data-facts='["Gira de lado com um eixo inclinado em 98 graus.", "Possui ventos que chegam a 900 km/h.", "Tem anéis escuros e estreitos ao seu redor.", "É o planeta com a atmosfera mais fria do sistema solar."]' 
+                 data-more="Urano foi o primeiro planeta descoberto com o uso de um telescópio por William Herschel em 1781. Sua cor azul-clara é resultado da absorção da luz vermelha pelo gás metano em sua atmosfera."></div>
+        </div>
+
+        <div class="orbit neptune-orbit">
+            <button class="planet-btn" data-planet="neptune">?</button>
+            <div class="planet neptune" 
+                 data-name="Netuno" 
+                 data-desc="O planeta azul profundo, o mais distante do Sol em nossa órbita principal." 
+                 data-facts='["Possui os ventos mais fortes do sistema, superando 2.100 km/h.", "Sua lua Tritão orbita o planeta na direção oposta.", "Leva 165 anos terrestres para completar uma órbita.", "Possui uma Grande Mancha Escura."]' 
+                 data-more="Netuno é invisível a olho nu. Foi o primeiro planeta a ter sua existência prevista por cálculos matemáticos antes de ser observado por um telescópio."></div>
+        </div>
+
+        <div class="orbit pluto-orbit">
+            <button class="planet-btn" data-planet="pluto">?</button>
+            <div class="planet plutao" 
+                 data-name="Plutão" 
+                 data-desc="O famoso planeta anão localizado no Cinturão de Kuiper." 
+                 data-facts='["Possui uma vasta planície de gelo em formato de coração.", "É menor que a nossa Lua terrestre.", "Sua maior lua, Caronte, é tão grande que eles orbitam um ao outro.", "A luz do Sol leva 5,5 horas para chegar lá."]' 
+                 data-more="Plutão foi considerado o nono planeta até 2006. Ele possui uma órbita altamente elíptica que, por vezes, o traz para mais perto do Sol do que o próprio Netuno."></div>
+        </div>
+    </div>
+
+    <div class="info-card" id="info-card">
+        <button id="close-btn">&times;</button>
+        <h2 id="planet-display-name">NOME</h2>
+        <p id="planet-display-desc">Descrição carregando...</p>
+        
+        <div class="fact-box">
+            <strong style="color:var(--gold-accent)">DADO CIENTÍFICO:</strong>
+            <p id="planet-display-fact">Fato carregando...</p>
+        </div>
+
+        <div class="nav-btns">
+            <button class="action-btn" id="next-fact-btn">Próxima Curiosidade</button>
+            <button class="action-btn" id="more-toggle-btn">Saiba Mais Detalhes</button>
+        </div>
+
+        <div id="planet-more-content">Conteúdo expandido carregando...</div>
+    </div>
+
+    <script>
+        const buttons = document.querySelectorAll('.planet-btn');
+        const card = document.getElementById('info-card');
+        const close = document.getElementById('close-btn');
+        const nextFact = document.getElementById('next-fact-btn');
+        const moreToggle = document.getElementById('more-toggle-btn');
+
+        const dispName = document.getElementById('planet-display-name');
+        const dispDesc = document.getElementById('planet-display-desc');
+        const dispFact = document.getElementById('planet-display-fact');
+        const dispMore = document.getElementById('planet-more-content');
+
+        let activeFacts = [];
+        let factPointer = 0;
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                const planetKey = btn.dataset.planet;
+                // Busca refinada: mapeia a chave do botão para a classe da div de dados
+                const selector = planetKey === 'mercury' ? '.mercurio' : 
+                                 planetKey === 'pluto' ? '.plutao' : `.${planetKey}`;
+                
+                const dataDiv = document.querySelector(selector);
+
+                if(dataDiv) {
+                    dispName.textContent = dataDiv.dataset.name;
+                    dispDesc.textContent = dataDiv.dataset.desc;
+                    dispMore.textContent = dataDiv.dataset.more;
+                    activeFacts = JSON.parse(dataDiv.dataset.facts);
+                    factPointer = 0;
+                    dispFact.textContent = activeFacts[factPointer];
+
+                    dispMore.style.display = 'none';
+                    moreToggle.textContent = "Saiba Mais Detalhes";
+                    card.classList.add('show');
+                }
+            });
+        });
+
+        close.addEventListener('click', () => {
+            card.classList.remove('show');
+        });
+
+        nextFact.addEventListener('click', () => {
+            factPointer = (factPointer + 1) % activeFacts.length;
+            dispFact.style.opacity = 0;
+            setTimeout(() => {
+                dispFact.textContent = activeFacts[factPointer];
+                dispFact.style.opacity = 1;
+            }, 150);
+        });
+
+        moreToggle.addEventListener('click', () => {
+            if (dispMore.style.display === 'none' || dispMore.style.display === '') {
+                dispMore.style.display = 'block';
+                moreToggle.textContent = "Ver Menos";
+            } else {
+                dispMore.style.display = 'none';
+                moreToggle.textContent = "Saiba Mais Detalhes";
+            }
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BODY') {
+                card.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
