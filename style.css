@@ -399,78 +399,35 @@ body::before {
 
     body {
         overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        min-height: 100vh;
+        position: relative;
     }
 
-    /* SISTEMA SOLAR - Muito menor para caber no celular */
     .solar-system {
-        width: 100vw;
-        height: 100vh;
-        max-width: 100%;
-        max-height: 100%;
-        transform: scale(0.25);
-        width: 1000px;
-        height: 1000px;
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%) scale(0.12) !important;
+        width: 1000px;
+        height: 1000px;
+        max-width: none;
+        max-height: none;
+        transform: translate(-50%, -50%) scale(0.32);
+        transform-origin: center center;
         margin: 0;
         padding: 0;
         z-index: 1;
     }
 
-    /* ÓRBITAS - Mantêm proporcionalidade */
-    .mercury-orbit { width: 120px; height: 120px; }
-    .venus-orbit { width: 160px; height: 160px; }
-    .earth-orbit { width: 200px; height: 200px; }
-    .mars-orbit { width: 240px; height: 240px; }
-    .jupiter-orbit { width: 320px; height: 320px; }
-    .saturn-orbit { width: 380px; height: 380px; }
-    .uranus-orbit { width: 440px; height: 440px; }
-    .neptune-orbit { width: 500px; height: 500px; }
-    .pluto-orbit { width: 560px; height: 560px; }
-
-    .asteroid-belt {
-        width: 480px;
-        height: 480px;
+    .solar-system::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
     }
 
-    /* SOL */
-    .sun {
-        width: 90px;
-        height: 90px;
-        pointer-events: auto;
-    }
-
-    /* PLANETAS - Reduzidos muito pouco (a escala já reduz) */
-    .mercurio { width: 14px; height: 14px; }
-    .venus { width: 20px; height: 20px; }
-    .earth { width: 24px; height: 24px; }
-    .mars { width: 18px; height: 18px; }
-    .jupiter { width: 50px; height: 50px; }
-    .saturn { width: 42px; height: 42px; }
-    .uranus { width: 30px; height: 30px; }
-    .neptune { width: 30px; height: 30px; }
-    .plutao { width: 12px; height: 12px; }
-
-    /* BOTÕES MAIORES PARA TOQUE */
-    .planet-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
-        left: -50px;
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    .planet-btn:hover {
-        transform: scale(1.2);
-    }
-
-    /* HUD - Título no topo centralizado */
     .hud-title {
         position: fixed;
         top: 8px;
@@ -480,60 +437,62 @@ body::before {
         border-left: 2px solid #ffcc00;
         padding-left: 10px;
         text-align: center;
+        width: calc(100% - 20px);
+        max-width: 90vw;
     }
 
     .hud-title h1 {
-        font-size: 14px;
+        font-size: 15px;
         letter-spacing: 1px;
         margin: 0;
         white-space: nowrap;
     }
 
     .hud-title p {
-        font-size: 8px;
+        font-size: 10px;
         margin: 2px 0 0 0;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 90vw;
+        max-width: 100%;
     }
 
-    /* CARD - Fixo na parte inferior, centralizado */
     .info-card {
         position: fixed;
-        bottom: 8px;
+        bottom: 10px;
         left: 50%;
         right: auto;
         top: auto;
         width: 92%;
-        max-width: 92%;
-        max-height: 35vh;
-        padding: 12px;
-        border-radius: 10px;
+        max-width: 420px;
+        max-height: 42vh;
+        padding: 14px;
+        border-radius: 14px;
         transform: translateX(-50%);
-        font-size: 12px;
+        font-size: 13px;
         overflow-y: auto;
         z-index: 10000;
+        box-shadow: 0 -8px 30px rgba(0,0,0,0.7);
     }
 
     .info-card.show {
-        bottom: 8px;
+        bottom: 10px;
         left: 50%;
         transform: translateX(-50%);
         display: block !important;
     }
 
     .info-card h2 {
-        font-size: 16px;
+        font-size: 18px;
         margin: 0 0 8px 0;
         text-transform: uppercase;
         letter-spacing: 1px;
     }
 
     .info-card p {
-        font-size: 11px;
+        font-size: 12px;
         margin: 6px 0;
-        line-height: 1.4;
+        line-height: 1.45;
     }
 
     .info-card #close-btn {
@@ -546,41 +505,40 @@ body::before {
     }
 
     .fact-box {
-        padding: 8px;
-        margin: 10px 0;
-        font-size: 10px;
+        padding: 10px;
+        margin: 12px 0;
+        font-size: 11px;
         border-radius: 8px;
     }
 
     .fact-box p {
-        font-size: 10px;
+        font-size: 11px;
         margin: 4px 0;
     }
 
     .fact-box strong {
-        font-size: 10px;
+        font-size: 11px;
     }
 
     .nav-btns {
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 8px;
     }
 
     .action-btn {
-        padding: 8px;
-        font-size: 10px;
+        padding: 10px;
+        font-size: 11px;
         margin: 0;
         border-radius: 6px;
     }
 
     #planet-more-content {
-        font-size: 10px;
-        margin-top: 8px;
-        padding-top: 8px;
+        font-size: 11px;
+        margin-top: 10px;
+        padding-top: 10px;
         line-height: 1.4;
     }
-
 }
 
 /* Animações adicionais para estrelas */
@@ -712,4 +670,4 @@ body::before {
     transition: all 0.3s ease;
 }
 
-/* Fim do CSS */     
+/* Fim do CSS */
